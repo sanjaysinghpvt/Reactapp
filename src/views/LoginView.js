@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { fieldValueStore} from '../Actions/index.js'
+import { fieldValueStore,formSubmit} from '../Actions/index.js'
 import * as constants from '../Constants'
 
 class LoginView extends Component {
@@ -8,16 +8,17 @@ class LoginView extends Component {
  constructor(props) {
     super(props);
     this.state={
-        email:'dada@dasgh.com',  
-        password:'dasdada',
-        key:123
+        email:'',  
+        password:'',
+        email_error_msg:'',
+        password_error_msg:''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.valid = this.valid.bind(this);
+   
 }
 
-renderInputField(label_name,field_type,name,value) {
+renderInputField(label_name,field_type,name,value,error_msg) {
     return (
         <div>
           <label htmlFor={label_name}>
@@ -31,15 +32,30 @@ renderInputField(label_name,field_type,name,value) {
             value= {value}
             onChange={this.handleChange}
           />
+          <span>{error_msg}</span>
         </div>
+        
     );
   }
 	
 handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
-    
+    var flag = "";
+    this.setState({email_error_msg : ""})
+    this.setState({password_error_msg : ""})
+    if(this.state.email == ""){
+        this.setState({email_error_msg : "please fill email id"})
+        flag = "false";
+    }else if(this.state.password == ""){
+        this.setState({password_error_msg : "please fill email id"})
+        flag = "false";
+    }
+    if(flag != "false"){
+        this.props.dispatch(formSubmit(constants.UPDATE_FORM_VALUE, this.state))
+    }
 }
+
+
 
 handleChange(event) {
     var key= event.target.name
@@ -52,15 +68,10 @@ handleChange(event) {
             this.setState({password : val})
             break;
     }
-    var data = {
-        type: "email",
-        params:event.target.value
-    }
-    this.props.dispatch(fieldValueStore(constants.UPDATE_FORM_VALUE, data))
+   
 }
 	
 render() {
-    console.log("dasdas");
     return (
     <div className="sufee-login d-flex align-content-center flex-wrap">
         <div className="container">
@@ -73,10 +84,10 @@ render() {
 								<div className="login-form">
                     <form id="login_form" onSubmit={this.handleSubmit} >
                         <div className="form-group">
-                            {this.renderInputField("Email address", "email","email",this.state.email)}
+                            {this.renderInputField("Email address", "email","email",this.state.email,this.state.email_error_msg)}
                         </div>
                         <div className="form-group">
-                            {this.renderInputField("Password", "password","password",this.state.password)}
+                            {this.renderInputField("Password", "password","password",this.state.password,this.state.password_error_msg)}
                         </div>
                         <div className="checkbox">
                             <label>

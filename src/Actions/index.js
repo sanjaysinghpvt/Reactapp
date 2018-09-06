@@ -1,5 +1,10 @@
 // Start Function for set Field value in store
+
+import Services from '../Services';
+
+
 export function fieldValueStore(type, data) {
+    console.log("dasdadas")
     return {
         type: type,
         params: data
@@ -8,6 +13,7 @@ export function fieldValueStore(type, data) {
 
 // Start Function for submit form data
 export function formSubmit(type, data) {
+    console.log(Services.userdata())
     return {
         type: type,
         payload: data
