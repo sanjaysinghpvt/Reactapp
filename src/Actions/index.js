@@ -13,7 +13,7 @@ export function fieldValueStore(type, data) {
 
 // Start Function for submit form data
 export function formSubmit(type, data) {
-    console.log(Services.userdata())
+    Services.userdata(data)
     return {
         type: type,
         payload: data
