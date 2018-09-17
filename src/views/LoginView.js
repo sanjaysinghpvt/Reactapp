@@ -51,8 +51,12 @@ handleSubmit(event) {
         flag = "false";
     }
     if(flag != "false"){
-        this.props.dispatch(formSubmit(constants.UPDATE_FORM_VALUE, this.state))
-    }
+        var updateDtata = {
+            type: "password",
+            params: this.state.password
+        }
+             this.props.dispatch(formSubmit(constants.UPDATE_FORM_VALUE, updateDtata))
+        }
 }
 
 
@@ -110,10 +114,8 @@ render() {
     );
   }
 }
-
 const mapStateToProps = (state) => ({ 
 	login: state.login 
 })
-
 export default connect(mapStateToProps)(LoginView)
 //export default LoginView;
